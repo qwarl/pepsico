@@ -1,9 +1,7 @@
 import { StyleSheet, Text, View, Dimensions, ImageBackground, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
 import images from '../../constants/images'
-import styles from '../../constants/style';
-
-const { width, height } = Dimensions.get('window');
+import styles from './style';
 
 const index = () => {
 	return (
@@ -14,6 +12,7 @@ const index = () => {
 			<TouchableOpacity>
 				<Image source={images.btn_home} style={styles.btn_home_style} />
 			</TouchableOpacity>
+			
 		</ImageBackground>
 	);
 };
