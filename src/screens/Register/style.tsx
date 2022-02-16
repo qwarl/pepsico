@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
     },
     nav_style: {
         width: '100%',
-        // height:'100%',
     },
     text_home_style: {
         marginTop: width * 0.135,

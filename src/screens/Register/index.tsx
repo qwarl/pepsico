@@ -28,12 +28,14 @@ const index = () => {
         });
     }, []);
 
-    // useEffect(() => {
-    //     //get all districts from the province you choice
-    //     axios.get(`https://provinces.open-api.vn/api/p/${selectedProvince}?depth=2`).then((res) => {
-    //         setDataDistrict(res["data"]?.districts);
-    //     });
-    // }, [selectedProvince]);
+    useEffect(() => {
+        //get all districts from the province you choice
+        axios.get(`https://provinces.open-api.vn/api/p/${selectedProvince}?depth=2`).then((res) => {
+            console.log('hoho');
+
+            setDataDistrict(res["data"]?.districts);
+        });
+    }, [selectedProvince]);
 
     // useEffect(() => {
     //     //get all wards from the district you choice
@@ -50,29 +52,28 @@ const index = () => {
                 <Text style={styles.blue_text_style}>THÔNG TIN MUA HÀNG</Text>
                 <View style={styles.province_input_style}>
                     <Text style={styles.white_text_style}>Tỉnh / Thành Phố</Text>
-                </View>
-                <View
-                    style={{
-                        backgroundColor: 'white',
-                        elevation: 1,
-                        borderWidth: 0.8,
-                        borderColor: 'orange',
-                        // width: '100%'
-                    }}
-                >
-                    <Picker
-                        selectedValue={selectedProvince}
+                    <View
                         style={{
-                            fontSize: 18,
-                            color: 'grey',
-                            fontWeight: "bold",
-                            backgroundColor: 'orange',
-                        }}
-                        onValueChange={(itemValue, itemIndex) => {
-                            setSelectedProvince(itemValue)
+                            backgroundColor: 'white',
+                            elevation: 1,
+                            borderWidth: 0.8,
+                            borderColor: 'orange',
+                            // width: '100%'
                         }}
                     >
-                        {/* {
+                        <Picker
+                            selectedValue={selectedProvince}
+                            style={{
+                                fontSize: 18,
+                                color: 'grey',
+                                fontWeight: "bold",
+                                backgroundColor: 'orange',
+                            }}
+                            onValueChange={(itemValue, itemIndex) => {
+                                setSelectedProvince(itemValue)
+                            }}
+                        >
+                            {/* {
                             selectedProvince == "default" && (
                                 <Picker.Item
                                     value="default"
@@ -80,17 +81,60 @@ const index = () => {
                                 />
                             )
                         } */}
-                        {dataProvince &&
-                            dataProvince.map((province: any) => (
-                                <Picker.Item
-                                    key={province.code}
-                                    value={selectedProvince}
-                                    label={province.name}
-                                // value={province.code}
-                                />
-                            ))}
-                    </Picker>
+                            {dataProvince &&
+                                dataProvince.map((province: any) => (
+                                    <Picker.Item
+                                        key={province.code}
+                                        value={selectedProvince}
+                                        label={province.name}
+                                        value={province.code}
+                                    />
+                                ))}
+                        </Picker>
+                    </View>
+                    <View>
+                        <Text style={styles.white_text_style}>Tỉnh / Thành Phố</Text>
+                        {/* // picer for districts  */}
+                        <View
+                            style={{
+                                backgroundColor: 'white',
+                                elevation: 1,
+                                borderWidth: 0.8,
+                                borderColor: 'orange',
+                            }}
+                        >
+                            <Picker
+                                selectedValue={selectedDistrict}
+                                style={{
+                                    //height: 100,
+                                    // width: 200,
+                                    fontSize: 18,
+                                    color: 'grey',
+                                    fontWeight: "bold",
+                                    backgroundColor: 'orange',
+                                }}
+                                onValueChange={(itemValue, itemIndex) => {
+                                    setSelectedDistrict(itemValue)
+                                }}
+                            >
+                                {/* <Picker.Item
+                value="default"
+                label="Your Districts"
+            /> */}
+                                {dataDistrict &&
+                                    dataDistrict.map((district:any) => (
+                                        <Picker.Item
+                                        key={district.code}
+                                            value={selectedDistrict}
+                                            label={district.name}
+                                            value={district.code}
+                                        />
+                                    ))}
+                            </Picker>
+                        </View>
+                    </View>
                 </View>
+
             </View>
 
             {/* <TouchableOpacity>
