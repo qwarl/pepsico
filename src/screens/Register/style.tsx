@@ -41,18 +41,40 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
     },
     province_input_style: {
-        marginTop:height*0.02,
+        // marginTop: height * 0.02,
 
     },
-    white_text_style:{
+    white_text_style: {
         fontFamily: 'Myriad Pro',
         fontStyle: 'normal',
         fontWeight: 'bold',
         fontSize: 14,
         lineHeight: 17,
         color: '#FFFFFF',
-    },
+        marginTop: height * 0.02,
 
+    },
+    district_input_style: {
+        // marginTop: height * 0.02,
+
+    },
+    contain_style: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    inputCity: {
+        borderColor: '#00355A',
+        borderWidth: 1,
+        borderRadius: 4,
+        fontFamily: 'Myriad Pro',
+        color: '#00355A',
+        marginTop: height * 0.01
+    },
+    contain_content_style: {
+        justifyContent: 'center',
+        margin:width*0.035
+        // alignItems: 'center',
+    },
 });
 
 export default styles

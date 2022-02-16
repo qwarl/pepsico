@@ -1,29 +1,60 @@
-import { View, Text, ImageBackground, Image, TouchableOpacity } from 'react-native'
+import { View, Text, ImageBackground, Image, TouchableOpacity, ProgressViewIOSComponent, Dimensions } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import images from '../../constants/images'
 import styles from './style';
-import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
+import DropDownPicker from 'react-native-dropdown-picker';
+import { AGENCY } from '../../models/pepsico';
+const { width, height } = Dimensions.get('window');
+
+type Province = {
+    name: string,
+    code: Number,
+    division_type: string,
+    codename: string,
+    phone_code: Number,
+    districts: [],
+}
+
+const Item = (props: any) => {
+    return (
+        <View style={{ padding: 5 }} key={props.item}>
+            <TouchableOpacity onPress={() => {
+                props.handleSetOpen(false);
+                props.handleSetValue(props.value)
+            }}>
+                <Text style={{ color: "#00355A", fontSize: 14 }}>
+                    {props.item.value}
+                </Text>
+                <Text style={{ color: "#5499AB", }}>
+                    {props.item.address}
+                </Text>
+            </TouchableOpacity>
+        </View>
+    )
+}
 
 const index = () => {
     const [recipientName, setRecipientName] = useState('');
     const [recipientPhone, setRecipientPhone] = useState('');
 
-    const [selectedProvince, setSelectedProvince] = useState(Number(''));
-    const [dataProvince, setDataProvince] = useState<any[]>([])
+    const [openProvince, setOpenProvince] = useState(false);
+    const [selectedProvince, setSelectedProvince] = useState('default');
+    const [dataProvince, setDataProvince] = useState<any | Province[]>([])
 
-    const [selectedDistrict, setSelectedDistrict] = useState(Number(''));
-    const [dataDistrict, setDataDistrict] = useState(null);
+    const [openDistrict, setOpenDistrict] = useState(false);
+    const [selectedDistrict, setSelectedDistrict] = useState('default');
+    const [dataDistrict, setDataDistrict] = useState<any | Province[]>([]);
 
-    const [selectedWard, setSelectedWard] = useState(Number(''));
-    const [dataWard, setDataWard] = useState(null);
+    const [openAgency, setOpenAgency] = useState(false);
+    const [agencyValue, setAgencyValue] = useState<string | null>(null);
+    const [agency, setAgency] = useState(AGENCY);
     useEffect(() => {
         //get all province from this api
         axios.get(`https://provinces.open-api.vn/api/?p==1`).then((res) => {
             // console.log('hihi', res["data"]);
             console.log('hihi');
             setDataProvince(res["data"]);
-            // console.log('dc chua v', setDataProvince(res["data"]));
 
         });
     }, []);
@@ -37,104 +68,127 @@ const index = () => {
         });
     }, [selectedProvince]);
 
-    // useEffect(() => {
-    //     //get all wards from the district you choice
-    //     axios.get(`https://provinces.open-api.vn/api/d/${selectedDistrict}?depth=2`).then((res) => {
-    //         setDataWard(res["data"]?.wards);
-    //     });
-    // }, [selectedDistrict]);
-
     return (
         <ImageBackground source={images.bg} style={styles.container}>
             <Image source={images.nav} style={styles.nav_style} />
             <Image source={images.text_register} style={styles.text_register_style} />
             <View style={styles.input_area_view_style}>
-                <Text style={styles.blue_text_style}>THÔNG TIN MUA HÀNG</Text>
-                <View style={styles.province_input_style}>
-                    <Text style={styles.white_text_style}>Tỉnh / Thành Phố</Text>
-                    <View
-                        style={{
-                            backgroundColor: 'white',
-                            elevation: 1,
-                            borderWidth: 0.8,
-                            borderColor: 'orange',
-                            // width: '100%'
-                        }}
-                    >
-                        <Picker
-                            selectedValue={selectedProvince}
-                            style={{
-                                fontSize: 18,
-                                color: 'grey',
-                                fontWeight: "bold",
-                                backgroundColor: 'orange',
-                            }}
-                            onValueChange={(itemValue, itemIndex) => {
-                                setSelectedProvince(itemValue)
-                            }}
-                        >
-                            {/* {
-                            selectedProvince == "default" && (
-                                <Picker.Item
-                                    value="default"
-                                    label="Choose Your Province"
-                                />
-                            )
-                        } */}
-                            {dataProvince &&
-                                dataProvince.map((province: any) => (
-                                    <Picker.Item
-                                        key={province.code}
-                                        value={selectedProvince}
-                                        label={province.name}
-                                        value={province.code}
-                                    />
-                                ))}
-                        </Picker>
-                    </View>
+                <View style={styles.contain_content_style}>
+                    <Text style={styles.blue_text_style}>THÔNG TIN MUA HÀNG</Text>
                     <View>
-                        <Text style={styles.white_text_style}>Tỉnh / Thành Phố</Text>
-                        {/* // picer for districts  */}
-                        <View
-                            style={{
-                                backgroundColor: 'white',
-                                elevation: 1,
-                                borderWidth: 0.8,
-                                borderColor: 'orange',
-                            }}
-                        >
-                            <Picker
-                                selectedValue={selectedDistrict}
-                                style={{
-                                    //height: 100,
-                                    // width: 200,
-                                    fontSize: 18,
-                                    color: 'grey',
-                                    fontWeight: "bold",
-                                    backgroundColor: 'orange',
-                                }}
-                                onValueChange={(itemValue, itemIndex) => {
-                                    setSelectedDistrict(itemValue)
-                                }}
-                            >
-                                {/* <Picker.Item
-                value="default"
-                label="Your Districts"
-            /> */}
-                                {dataDistrict &&
-                                    dataDistrict.map((district:any) => (
-                                        <Picker.Item
-                                        key={district.code}
-                                            value={selectedDistrict}
-                                            label={district.name}
-                                            value={district.code}
-                                        />
-                                    ))}
-                            </Picker>
+                        <View style={styles.contain_style}>
+                            <View style={styles.province_input_style}>
+                                <Text style={styles.white_text_style}>Tỉnh / Thành Phố</Text>
+
+                                <DropDownPicker
+                                    open={openProvince}
+                                    value={selectedProvince}
+                                    items={dataProvince}
+                                    setOpen={setOpenProvince}
+                                    setValue={setSelectedProvince}
+                                    setItems={setDataProvince}
+                                    // key={dataProvince.code}
+                                    listMode="SCROLLVIEW"
+                                    style={styles.inputCity}
+                                    containerStyle={{
+                                        width: width / 2.3,
+                                        borderRadius: 5,
+                                        // marginRight: 30,
+                                    }}
+                                    placeholder="Chọn tỉnh / thành"
+                                    selectedItemContainerStyle={{
+                                        backgroundColor: "#84E5FF",
+                                    }}
+                                    listItemLabelStyle={{
+                                        color: "#00355A"
+                                    }}
+                                    selectedItemLabelStyle={{
+                                        color: "#00355A"
+                                    }}
+                                    dropDownContainerStyle={{
+                                        marginTop: 4,
+                                        borderRadius: 5
+                                    }}
+                                    modalContentContainerStyle={{
+                                        backgroundColor: "red"
+                                    }}
+                                    disableBorderRadius={true}
+                                // zIndex={1000}
+                                />
+                            </View>
+
+                            <View style={styles.district_input_style}>
+                                <Text style={styles.white_text_style}>Quận / huyện</Text>
+                                <DropDownPicker
+                                    open={openDistrict}
+                                    value={selectedDistrict}
+                                    items={dataDistrict}
+                                    setOpen={setOpenDistrict}
+                                    setValue={setSelectedDistrict}
+                                    setItems={setDataDistrict}
+                                    // key={dataDistrict.code}
+                                    listMode="SCROLLVIEW"
+                                    style={styles.inputCity}
+                                    containerStyle={{
+                                        width: width / 2.3,
+                                        // color:'#00355A'
+                                    }}
+                                    selectedItemContainerStyle={{
+                                        backgroundColor: "#84E5FF",
+                                    }}
+                                    listItemLabelStyle={{
+                                        color: "#00355A"
+                                    }}
+                                    selectedItemLabelStyle={{
+                                        color: "#00355A"
+                                    }}
+                                    placeholder="Chọn quận / huyện"
+                                    dropDownContainerStyle={{
+                                        marginTop: 4,
+                                        borderRadius: 5
+                                    }}
+                                // zIndex={1000}
+                                />
+                            </View>
                         </View>
+                        <Text style={styles.white_text_style}>Đại lý</Text>
+                        <DropDownPicker
+                            open={openAgency}
+                            value={agencyValue}
+                            items={agency}
+                            setOpen={setOpenAgency}
+                            setValue={setAgencyValue}
+                            setItems={setAgency}
+                            listMode="SCROLLVIEW"
+                            style={styles.inputDistrict}
+                            containerStyle={{
+                                width: "100%",
+                                borderRadius: 5
+                            }}
+                            placeholder="Select an Agency"
+                            selectedItemContainerStyle={{
+                                backgroundColor: "#84E5FF",
+                            }}
+                            listItemLabelStyle={{
+                                color: "#00355A"
+                            }}
+                            selectedItemLabelStyle={{
+                                color: "#00355A"
+                            }}
+                            dropDownContainerStyle={{
+                                marginTop: 4,
+                                borderRadius: 5,
+                            }}
+                            onSelectItem={(item) => {
+                                console.log(item);
+                            }}
+                            renderListItem={(props) => <Item {...props} handleSetOpen={(payload: boolean) => setOpenAgency(payload)} handleSetValue={(payload: string | null) => setAgencyValue(payload)} />}
+                        // zIndex={100}
+                        />
+                        <Text style={{ alignSelf: 'center', color: '#429ACE' }}>________________________________________________</Text>
+                        <Text style={styles.blue_text_style}>THÔNG TIN NGƯỜI THAM GIA</Text>
                     </View>
                 </View>
-
             </View>
 
             {/* <TouchableOpacity>
