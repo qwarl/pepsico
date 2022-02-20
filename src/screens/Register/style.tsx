@@ -39,6 +39,8 @@ const styles = StyleSheet.create({
         lineHeight: 19.2,
         fontSize: 16,
         fontStyle: 'normal',
+        marginTop: width * 0.035,
+
     },
     province_input_style: {
         // marginTop: height * 0.02,
@@ -68,13 +70,57 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         fontFamily: 'Myriad Pro',
         color: '#00355A',
-        marginTop: height * 0.01
+        marginTop: height * 0.01,
+
     },
     contain_content_style: {
         justifyContent: 'center',
-        margin:width*0.035
+        marginLeft: width * 0.035,
+        marginRight: width * 0.035,
         // alignItems: 'center',
     },
+    input_style: {
+        fontFamily: 'Myriad Pro',
+        fontSize: 12,
+        lineHeight: 14,
+        // textAlign: 'center',
+        color: '#5499AB',
+        backgroundColor: '#FFFFFF',
+        width: width / 2.3,
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: '#00355A',
+        // marginLeft:width*0.01
+        // text
+        placeHolderColor: 'red',
+        paddingLeft: width * 0.01,
+    },
+    infor_style: {
+
+    },
+    contain_info_party: {
+        borderWidth: 1,
+        borderRadius:8,
+        borderColor:'#48a1d3',
+        backgroundColor:'#0d5ea7'
+    },
+    input_party_style:{
+        fontFamily: 'Myriad Pro',
+        fontSize: 12,
+        lineHeight: 14,
+        // textAlign: 'center',
+        color: '#5499AB',
+        backgroundColor: '#FFFFFF',
+        // width: width / 2.3,
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: '#00355A',
+        // marginLeft:width*0.01
+        // text
+        placeHolderColor: 'red',
+        paddingLeft: width * 0.01,
+    },
+
 });
 
 export default styles
