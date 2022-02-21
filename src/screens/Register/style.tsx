@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
         borderColor: '#00355A',
         // marginLeft:width*0.01
         // text
-        placeHolderColor: 'red',
+        // placeHolderColor: 'red',
         paddingLeft: width * 0.01,
     },
     infor_style: {
@@ -100,25 +100,34 @@ const styles = StyleSheet.create({
     },
     contain_info_party: {
         borderWidth: 1,
-        borderRadius:8,
-        borderColor:'#48a1d3',
-        backgroundColor:'#0d5ea7'
+        borderRadius: 8,
+        borderColor: '#48a1d3',
+        backgroundColor: '#0d5ea7'
     },
-    input_party_style:{
+    input_party_style: {
         fontFamily: 'Myriad Pro',
         fontSize: 12,
         lineHeight: 14,
-        // textAlign: 'center',
         color: '#5499AB',
         backgroundColor: '#FFFFFF',
-        // width: width / 2.3,
         borderRadius: 5,
         borderWidth: 1,
         borderColor: '#00355A',
-        // marginLeft:width*0.01
-        // text
-        placeHolderColor: 'red',
         paddingLeft: width * 0.01,
+    },
+    text_view: {
+        color: '#5499AB',
+        fontSize: 12,
+        fontFamily: 'Myriad Pro',
+
+    },
+    view_style: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: 5,
+        paddingLeft: width * 0.01,
+        lineHeight: 14,
+        height:width*0.1,
+        justifyContent:'center'
     },
 
 });

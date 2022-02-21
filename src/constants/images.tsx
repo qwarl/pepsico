@@ -6,6 +6,7 @@ const images={
     reward_home:require('../img/reward_home.png'),
     btn_home:require('../img/btn_home.png'),
     btn_register:require('../img/btn_register.png'),
+    calendar:require('../img/calendar.png'),
 }
 
 export default images
