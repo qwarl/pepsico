@@ -52,25 +52,29 @@ const index = () => {
     const [agency, setAgency] = useState(AGENCY);
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
+    const [dateTime, setDateTime] = useState('Chọn thời gian')
     const showDatePicker = () => {
+
         setDatePickerVisibility(true);
     };
 
     const hideDatePicker = () => {
+
         setDatePickerVisibility(false);
     };
 
     const handleConfirm = (date: any) => {
         console.warn("A date has been picked: ", date);
+        console.log('ngafy', date);
+        setDateTime(date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear()+' - '+date.getHours()+':'+date.getMinutes());
         hideDatePicker();
     };
 
     useEffect(() => {
         //get all province from this api
         axios.get(`https://provinces.open-api.vn/api/?p==1`).then((res) => {
-            // console.log('hihi', res["data"]);
-            console.log('hihi');
+            console.log('hihi', res["data"]);
+            // console.log('hihi');
             setDataProvince(res["data"]);
 
         });
@@ -103,7 +107,7 @@ const index = () => {
                                         value={selectedProvince}
                                         items={dataProvince}
                                         setOpen={setOpenProvince}
-                                        setValue={setSelectedProvince}
+                                        setValue={dataProvince}
                                         setItems={setDataProvince}
                                         // key={dataProvince.code}
                                         listMode="SCROLLVIEW"
@@ -303,8 +307,8 @@ const index = () => {
                                 <Text style={styles.white_text_style}>Thời gian tiệc</Text>
                                 <View>
                                     <View >
-                                        <TouchableOpacity style={{ flexDirection: 'row', backgroundColor: '#FFFFFF', justifyContent:'space-between', alignItems:'center' }} onPress={showDatePicker}>
-                                            <Text style={styles.text_view}>Chọn thời gian</Text>
+                                        <TouchableOpacity style={{ flexDirection: 'row', backgroundColor: '#FFFFFF', justifyContent: 'space-between', alignItems: 'center' }} onPress={showDatePicker}>
+                                            <Text style={styles.text_view}>{dateTime}</Text>
                                             <Image source={images.calendar} />
                                         </TouchableOpacity>
                                     </View>

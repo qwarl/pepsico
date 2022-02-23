@@ -7,6 +7,8 @@ const images={
     btn_home:require('../img/btn_home.png'),
     btn_register:require('../img/btn_register.png'),
     calendar:require('../img/calendar.png'),
+    btn_success:require('../img/btn_success.png'),
+    bg_sc:require('../img/bg_sc.png'),
 }
 
 export default images
