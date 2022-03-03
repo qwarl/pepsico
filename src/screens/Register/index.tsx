@@ -6,6 +6,10 @@ import axios from 'axios';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { AGENCY } from '../../models/pepsico';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+// import dataCity from '../../constants/get_api';
+import { DATA_CITY } from '../../constants/get_api';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+
 const { width, height } = Dimensions.get('window');
 
 type Province = {
@@ -15,6 +19,11 @@ type Province = {
     codename: string,
     phone_code: Number,
     districts: [],
+}
+
+interface responseChild {
+    uri: string,
+    fileName?: string
 }
 
 const Item = (props: any) => {
@@ -40,8 +49,9 @@ const index = () => {
     const [recipientPhone, setRecipientPhone] = useState('');
 
     const [openProvince, setOpenProvince] = useState(false);
-    const [selectedProvince, setSelectedProvince] = useState('default');
-    const [dataProvince, setDataProvince] = useState<any | Province[]>([])
+    const [provinceValue, setProvinceValue] = useState<any | null>(null);
+    // const [Province, setProvince] = useState(dataCity)
+    const [Province, setProvince] = useState(DATA_CITY)
 
     const [openDistrict, setOpenDistrict] = useState(false);
     const [selectedDistrict, setSelectedDistrict] = useState('default');
@@ -66,28 +76,93 @@ const index = () => {
     const handleConfirm = (date: any) => {
         console.warn("A date has been picked: ", date);
         console.log('ngafy', date);
-        setDateTime(date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear()+' - '+date.getHours()+':'+date.getMinutes());
+        setDateTime(date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' - ' + date.getHours() + ':' + date.getMinutes());
         hideDatePicker();
     };
 
-    useEffect(() => {
-        //get all province from this api
-        axios.get(`https://provinces.open-api.vn/api/?p==1`).then((res) => {
-            console.log('hihi', res["data"]);
-            // console.log('hihi');
-            setDataProvince(res["data"]);
+    const [image1, setImage1] = useState<responseChild | null>(null);
+    const [image2, setImage2] = useState<responseChild | null>(null);
+    const [image3, setImage3] = useState<responseChild | null>(null);
 
+    const selectImage1 = () => {
+        const options: any = {
+            maxWidth: 2000,
+            maxHeight: 2000,
+            mediaType: "photo"
+        };
+        launchImageLibrary(options, (response: any) => {
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.errorCode) {
+                console.log('ImagePicker Error: ', response.errorCode);
+            } else if (response.errorMessage) {
+                console.log('User tapped custom button: ', response.errorMessage);
+            } else {
+                const source = { uri: response.assets[0].uri, fileName: response.assets[0].fileName };
+                setImage1(source);
+            }
         });
-    }, []);
+    };
+    const selectImage2 = () => {
+        const options: any = {
+            maxWidth: 2000,
+            maxHeight: 2000,
+            mediaType: "photo"
+        };
 
-    useEffect(() => {
-        //get all districts from the province you choice
-        axios.get(`https://provinces.open-api.vn/api/p/${selectedProvince}?depth=2`).then((res) => {
-            console.log('hoho');
-
-            setDataDistrict(res["data"]?.districts);
+        launchImageLibrary(options, (response: any) => {
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.errorCode) {
+                console.log('ImagePicker Error: ', response.errorCode);
+            } else if (response.errorMessage) {
+                console.log('User tapped custom button: ', response.errorMessage);
+            } else {
+                const source = { uri: response.assets[0].uri, fileName: response.assets[0].fileName };
+                setImage2(source);
+            }
         });
-    }, [selectedProvince]);
+    };
+
+    const selectImage3 = () => {
+        const options: any = {
+            maxWidth: 2000,
+            maxHeight: 2000,
+            mediaType: "photo"
+        };
+        launchImageLibrary(options, (response: any) => {
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.errorCode) {
+                console.log('ImagePicker Error: ', response.errorCode);
+            } else if (response.errorMessage) {
+                console.log('User tapped custom button: ', response.errorMessage);
+            } else {
+                const source = { uri: response.assets[0].uri, fileName: response.assets[0].fileName };
+                setImage3(source);
+            }
+        });
+    };
+
+    // useEffect(() => {
+    //     //get all province from this api
+    //     // axios.get(`https://provinces.open-api.vn/api/?p==1`).then((res) => {
+    //     //     console.log('hihi', res["data"]);
+    //     //     // console.log('hihi');
+    //     //     setDataProvince(res["data"]);
+    //     console.log('hoho', DATA_CITY)
+
+
+    // }, []);
+
+    // useEffect(() => {
+    //     //get all districts from the province you choice
+    //     axios.get(`https://provinces.open-api.vn/api/p/${selectedProvince}?depth=2`).then((res) => {
+    //         console.log('hoho');
+
+    //         setDataDistrict(res["data"]?.districts);
+    //     });
+    // }, [selectedProvince]);
 
     return (
         <ImageBackground source={images.bg} style={styles.container}>
@@ -98,17 +173,17 @@ const index = () => {
                     <View style={styles.contain_content_style}>
                         <Text style={styles.blue_text_style}>THÔNG TIN MUA HÀNG</Text>
                         <View>
-                            <View style={styles.contain_style}>
+                            {/* <View style={styles.contain_style}>
                                 <View style={styles.province_input_style}>
                                     <Text style={styles.white_text_style}>Tỉnh / Thành Phố</Text>
 
                                     <DropDownPicker
                                         open={openProvince}
-                                        value={selectedProvince}
-                                        items={dataProvince}
+                                        value={provinceValue}
+                                        items={Province}
                                         setOpen={setOpenProvince}
-                                        setValue={dataProvince}
-                                        setItems={setDataProvince}
+                                        setValue={setProvinceValue}
+                                        setItems={setProvince}
                                         // key={dataProvince.code}
                                         listMode="SCROLLVIEW"
                                         style={styles.inputCity}
@@ -209,7 +284,7 @@ const index = () => {
                                     renderListItem={(props) => <Item {...props} handleSetOpen={(payload: boolean) => setOpenAgency(payload)} handleSetValue={(payload: string | null) => setAgencyValue(payload)} />}
                                 // zIndex={100}
                                 />
-                            </View>
+                            </View> */}
                             <Text style={{ alignSelf: 'center', color: '#429ACE' }}>________________________________________________</Text>
                             <Text style={styles.blue_text_style}>THÔNG TIN NGƯỜI THAM GIA</Text>
                             <View>
@@ -231,7 +306,7 @@ const index = () => {
                                     <View style={styles.province_input_style}>
                                         <Text style={styles.white_text_style}>Tỉnh / Thành Phố</Text>
 
-                                        <DropDownPicker
+                                        {/* <DropDownPicker
                                             open={openProvince}
                                             value={selectedProvince}
                                             items={dataProvince}
@@ -265,7 +340,7 @@ const index = () => {
                                             }}
                                             disableBorderRadius={true}
                                         // zIndex={1000}
-                                        />
+                                        /> */}
                                     </View>
 
                                     <View style={styles.district_input_style}>
@@ -325,25 +400,34 @@ const index = () => {
                                 <View>
                                     <Text style={styles.white_text_style}>Hình thiệp cưới</Text>
                                     <View style={styles.view_style}>
-                                        <View>
-                                            <Text style={styles.text_view}>Đính kèm hình</Text>
-                                        </View>
+                                        <TouchableOpacity onPress={selectImage1}>
+                                            <TextInput value={image1?.fileName} editable={false} placeholder="Đính kèm hình" />
+                                        </TouchableOpacity>
                                     </View>
                                 </View>
                                 <View>
                                     <Text style={styles.white_text_style}>Hình hóa đơn bán hàng</Text>
                                     <View style={styles.view_style}>
-                                        <View>
-                                            <Text style={styles.text_view}>Đính kèm hình</Text>
-                                        </View>
+                                        <TouchableOpacity onPress={selectImage2}>
+
+                                            <View>
+                                                {/* <Text style={styles.text_view}>Đính kèm hình</Text> */}
+                                                <TextInput value={image2?.fileName} editable={false} placeholder="Đính kèm hình" />
+
+                                            </View>
+                                        </TouchableOpacity>
                                     </View>
                                 </View>
                                 <View>
                                     <Text style={styles.white_text_style}>Hình khối sản phẩm</Text>
                                     <View style={styles.view_style}>
-                                        <View>
-                                            <Text style={styles.text_view}>Đính kèm hình</Text>
-                                        </View>
+                                        <TouchableOpacity onPress={selectImage3}>
+
+                                            <View>
+                                                {/* <Text style={styles.text_view}>Đính kèm hình</Text> */}
+                                                <TextInput value={image3?.fileName} editable={false} placeholder="Đính kèm hình" />
+                                            </View>
+                                        </TouchableOpacity>
                                     </View>
                                 </View>
                             </View>

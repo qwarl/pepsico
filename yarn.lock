@@ -5906,6 +5906,11 @@
   "resolved" "https://registry.npmjs.org/react-native-dropdown-picker/-/react-native-dropdown-picker-5.3.0.tgz"
   "version" "5.3.0"
 
+"react-native-image-picker@^4.7.3":
+  "integrity" "sha512-eRKm4wlsmZHmsWFyv77kYc2F+ZyEVqe0m7mqhsMzWk6TQT4FBDtEDxmRDDFq+ivCu/1QD+EPhmYcAIpeGr7Ekg=="
+  "resolved" "https://registry.npmjs.org/react-native-image-picker/-/react-native-image-picker-4.7.3.tgz"
+  "version" "4.7.3"
+
 "react-native-modal-datetime-picker@^13.0.1":
   "integrity" "sha512-uPgonEKa/nIotmboEEriTCVfWLgrtuR+fybqSw6XcPc/+ve7Q6p55cbUGKtne3+sFcelk+QHcb0aPu56+VbsJA=="
   "resolved" "https://registry.npmjs.org/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-13.0.1.tgz"

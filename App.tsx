@@ -3,12 +3,14 @@ import React from 'react';
 import Home from './src/screens/Home'
 import Register from './src/screens/Register'
 import Success from './src/screens/Success'
+// import Api from './src/constants/get_api'
 const App = () => {
 	return (
 		<View style={styles.test}>
 			{/* <Home /> */}
-			<Register/>
+			<Register />
 			{/* <Success /> */}
+			{/* <Api /> */}
 		</View>
 	);
 };
